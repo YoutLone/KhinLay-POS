@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- The standard Point of Sale is the sole order-entry app. Keep the
+         integration installed for historical orders, recipes and reports. -->
+    <record id="menu_restaurant_pos_root" model="ir.ui.menu">
+        <field name="active" eval="False"/>
+    </record>
+
+    <menuitem id="menu_pos_restaurant_operations" name="Restaurant Operations"
+        parent="point_of_sale.menu_point_root" sequence="90"
+        groups="restaurant_pos.group_restaurant_seller"/>
+    <menuitem id="menu_pos_restaurant_ingredients" name="Ingredients"
+        parent="menu_pos_restaurant_operations" action="action_restaurant_ingredients"
+        sequence="10" groups="restaurant_pos.group_restaurant_seller"/>
+    <menuitem id="menu_pos_restaurant_low_stock" name="Low Stock"
+        parent="menu_pos_restaurant_operations" action="action_restaurant_low_stock"
+        sequence="20" groups="restaurant_pos.group_restaurant_seller"/>
+    <menuitem id="menu_pos_restaurant_expenses" name="Expenses"
+        parent="menu_pos_restaurant_operations" action="action_restaurant_expenses"
+        sequence="30" groups="restaurant_pos.group_restaurant_seller"/>
+    <menuitem id="menu_pos_restaurant_menu_links" name="Menu Product Links"
+        parent="menu_pos_restaurant_operations" action="action_restaurant_menu_items"
+        sequence="40" groups="restaurant_pos.group_restaurant_admin"/>
+    <menuitem id="menu_pos_restaurant_recipes" name="Recipes"
+        parent="menu_pos_restaurant_operations" action="action_restaurant_recipes"
+        sequence="50" groups="restaurant_pos.group_restaurant_admin"/>
+    <menuitem id="menu_pos_restaurant_daily_income" name="Daily Income"
+        parent="menu_pos_restaurant_operations" action="action_restaurant_daily_income"
+        sequence="60" groups="restaurant_pos.group_restaurant_admin"/>
+    <menuitem id="menu_pos_restaurant_profit_loss" name="Daily Profit and Loss"
+        parent="menu_pos_restaurant_operations" action="action_restaurant_profit_loss_day"
+        sequence="70" groups="restaurant_pos.group_restaurant_admin"/>
+    <menuitem id="menu_pos_restaurant_profit_loss_week" name="Weekly Profit and Loss"
+        parent="menu_pos_restaurant_operations" action="action_restaurant_profit_loss_week"
+        sequence="71" groups="restaurant_pos.group_restaurant_admin"/>
+    <menuitem id="menu_pos_restaurant_profit_loss_month" name="Monthly Profit and Loss"
+        parent="menu_pos_restaurant_operations" action="action_restaurant_profit_loss_month"
+        sequence="72" groups="restaurant_pos.group_restaurant_admin"/>
+    <menuitem id="menu_pos_restaurant_sales_details" name="Sales Details"
+        parent="menu_pos_restaurant_operations" action="action_restaurant_sales_details_wizard"
+        sequence="75" groups="restaurant_pos.group_restaurant_admin"/>
+    <menuitem id="menu_pos_restaurant_print_report" name="Print Financial Report"
+        parent="menu_pos_restaurant_operations" action="action_restaurant_report_wizard"
+        sequence="77" groups="restaurant_pos.group_restaurant_admin"/>
+
+    <record id="view_restaurant_legacy_order_list" model="ir.ui.view">
+        <field name="name">restaurant.legacy.order.list</field>
+        <field name="model">restaurant.order</field>
+        <field name="priority">99</field>
+        <field name="arch" type="xml">
+            <list string="Legacy Custom Orders" create="0" edit="0" delete="0">
+                <field name="name"/>
+                <field name="order_date"/>
+                <field name="table_id"/>
+                <field name="seller_id"/>
+                <field name="currency_id" column_invisible="True"/>
+                <field name="total_amount" widget="monetary"
+                    options="{'currency_field': 'currency_id'}"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_restaurant_legacy_order_form" model="ir.ui.view">
+        <field name="name">restaurant.legacy.order.form</field>
+        <field name="model">restaurant.order</field>
+        <field name="priority">99</field>
+        <field name="arch" type="xml">
+            <form string="Legacy Custom Order" create="0" edit="0" delete="0">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="order_date"/>
+                        <field name="table_id"/>
+                        <field name="seller_id"/>
+                        <field name="state"/>
+                        <field name="currency_id" invisible="1"/>
+                        <field name="total_amount" widget="monetary"
+                            options="{'currency_field': 'currency_id'}"/>
+                    </group>
+                    <field name="order_line_ids" readonly="1">
+                        <list create="0" edit="0" delete="0">
+                            <field name="menu_item_id"/>
+                            <field name="qty"/>
+                            <field name="unit_price"/>
+                            <field name="subtotal"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_restaurant_legacy_orders" model="ir.actions.act_window">
+        <field name="name">Legacy Custom Orders</field>
+        <field name="res_model">restaurant.order</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', 'in', ['paid', 'cancelled'])]</field>
+        <field name="view_ids" eval="[
+            (5, 0, 0),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('view_restaurant_legacy_order_list')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('view_restaurant_legacy_order_form')})
+        ]"/>
+    </record>
+    <menuitem id="menu_pos_restaurant_legacy_orders" name="Legacy Custom Orders"
+        parent="menu_pos_restaurant_operations" action="action_restaurant_legacy_orders"
+        sequence="80" groups="restaurant_pos.group_restaurant_admin"/>
+</odoo>

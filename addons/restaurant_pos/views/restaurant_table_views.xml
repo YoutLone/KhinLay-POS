@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_restaurant_tables" model="ir.actions.client">
+        <field name="name">Tables</field>
+        <field name="tag">restaurant_pos.Tables</field>
+    </record>
+    <menuitem id="menu_restaurant_pos_tables" name="Tables"
+        parent="menu_restaurant_pos_orders" action="action_restaurant_tables"
+        sequence="20" groups="restaurant_pos.group_restaurant_seller"/>
+
+    <record id="view_restaurant_dining_floor_list" model="ir.ui.view">
+        <field name="name">restaurant.dining.floor.list</field>
+        <field name="model">restaurant.floor</field>
+        <field name="arch" type="xml">
+            <list string="Dining Floors">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_restaurant_dining_floor_form" model="ir.ui.view">
+        <field name="name">restaurant.dining.floor.form</field>
+        <field name="model">restaurant.floor</field>
+        <field name="arch" type="xml">
+            <form string="Dining Floor">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="sequence"/>
+                        <field name="background_color" widget="color"/>
+                        <field name="active"/>
+                    </group>
+                    <notebook>
+                        <page string="Tables">
+                            <field name="table_ids">
+                                <list editable="bottom">
+                                    <field name="table_number"/>
+                                    <field name="seats"/>
+                                    <field name="shape"/>
+                                    <field name="position_h"/>
+                                    <field name="position_v"/>
+                                    <field name="width"/>
+                                    <field name="height"/>
+                                    <field name="active"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_restaurant_dining_floors" model="ir.actions.act_window">
+        <field name="name">Dining Floors</field>
+        <field name="res_model">restaurant.floor</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_ids" eval="[
+            (5, 0, 0),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('view_restaurant_dining_floor_list')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('view_restaurant_dining_floor_form')})
+        ]"/>
+    </record>
+
+    <record id="view_restaurant_dining_table_list" model="ir.ui.view">
+        <field name="name">restaurant.dining.table.list</field>
+        <field name="model">restaurant.table</field>
+        <field name="arch" type="xml">
+            <list string="Dining Tables">
+                <field name="floor_id"/>
+                <field name="table_number"/>
+                <field name="seats"/>
+                <field name="restaurant_status"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_restaurant_dining_table_form" model="ir.ui.view">
+        <field name="name">restaurant.dining.table.form</field>
+        <field name="model">restaurant.table</field>
+        <field name="arch" type="xml">
+            <form string="Dining Table">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="floor_id"/>
+                            <field name="table_number"/>
+                            <field name="seats"/>
+                            <field name="shape"/>
+                            <field name="active"/>
+                        </group>
+                        <group string="Floor Position">
+                            <field name="position_h"/>
+                            <field name="position_v"/>
+                            <field name="width"/>
+                            <field name="height"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Restaurant Orders">
+                            <field name="restaurant_order_ids" readonly="1">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="order_date"/>
+                                    <field name="currency_id" column_invisible="True"/>
+                                    <field name="total_amount" widget="monetary"
+                                        options="{'currency_field': 'currency_id'}"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_restaurant_dining_tables" model="ir.actions.act_window">
+        <field name="name">Dining Tables</field>
+        <field name="res_model">restaurant.table</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_ids" eval="[
+            (5, 0, 0),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('view_restaurant_dining_table_list')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('view_restaurant_dining_table_form')})
+        ]"/>
+    </record>
+</odoo>

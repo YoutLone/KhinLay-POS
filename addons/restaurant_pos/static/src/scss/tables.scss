@@ -1,0 +1,336 @@
+.o_restaurant_tables {
+    background: #f3f5f7;
+
+    .o_restaurant_floor_scroll {
+        width: 100%;
+        overflow: auto;
+        border: 1px solid #d9e0e7;
+        border-radius: 0.75rem;
+        background: white;
+    }
+
+    .o_restaurant_floor {
+        position: relative;
+        min-height: 680px;
+        background-image: radial-gradient(#d7dfe6 1px, transparent 1px);
+        background-size: 24px 24px;
+    }
+
+    .o_restaurant_table {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.15rem;
+        padding: 0.35rem;
+        border: 2px solid;
+        border-radius: 0.7rem;
+        text-align: center;
+        box-shadow: 0 4px 12px rgba(18, 35, 50, 0.12);
+        cursor: pointer;
+
+        &:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 18px rgba(18, 35, 50, 0.2);
+        }
+
+        &:disabled {
+            cursor: wait;
+        }
+    }
+
+    .o_restaurant_table_round {
+        border-radius: 50%;
+    }
+
+    .o_restaurant_table_available {
+        color: #075039;
+        border-color: #33a77c;
+        background: #dcf6e9;
+    }
+
+    .o_restaurant_table_occupied {
+        color: #663812;
+        border-color: #d48a3a;
+        background: #fff0d8;
+    }
+
+    .o_restaurant_table_status,
+    .o_restaurant_table_total {
+        font-size: 0.7rem;
+        line-height: 1.1;
+    }
+
+    .o_table_legend {
+        display: inline-block;
+        width: 0.75rem;
+        height: 0.75rem;
+        margin-right: 0.25rem;
+        border-radius: 50%;
+        vertical-align: middle;
+    }
+
+    .o_table_legend_available { background: #33a77c; }
+    .o_table_legend_occupied { background: #d48a3a; }
+
+    .o_restaurant_pos_header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .o_restaurant_pos_layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(300px, 360px);
+        gap: 1rem;
+        align-items: start;
+    }
+
+    .o_restaurant_pos_catalog,
+    .o_restaurant_pos_cart,
+    .o_restaurant_pos_payment_card,
+    .o_restaurant_pos_receipt_card {
+        background: #fff;
+        border: 1px solid #d9e0e7;
+        border-radius: 0.8rem;
+        box-shadow: 0 3px 14px rgba(18, 35, 50, 0.05);
+    }
+
+    .o_restaurant_pos_catalog,
+    .o_restaurant_pos_cart {
+        padding: 1rem;
+    }
+
+    .o_restaurant_pos_catalog_tools {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .o_restaurant_pos_search {
+        max-width: 280px;
+    }
+
+    .o_restaurant_pos_categories {
+        display: flex;
+        gap: 0.5rem;
+        overflow-x: auto;
+        padding-bottom: 0.75rem;
+
+        .btn { white-space: nowrap; }
+    }
+
+    .o_restaurant_pos_items {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 0.75rem;
+    }
+
+    .o_restaurant_pos_item {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow: hidden;
+        padding: 0;
+        min-height: 215px;
+        border: 1px solid #d9e0e7;
+        border-radius: 0.7rem;
+        background: #fff;
+        text-align: left;
+        cursor: pointer;
+
+        &:hover:not(:disabled) {
+            border-color: #33a77c;
+            box-shadow: 0 5px 16px rgba(18, 35, 50, 0.12);
+        }
+
+        &:disabled { cursor: wait; }
+
+        img,
+        .o_restaurant_pos_item_placeholder {
+            width: 100%;
+            height: 115px;
+            object-fit: cover;
+            background: #edf4f1;
+        }
+
+        .o_restaurant_pos_item_placeholder {
+            display: grid;
+            place-items: center;
+            font-size: 2.5rem;
+        }
+    }
+
+    .o_restaurant_pos_item_details {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        padding: 0.7rem;
+
+        small {
+            color: #62717d;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+    }
+
+    .o_restaurant_pos_item_price {
+        margin-top: auto;
+        color: #075039;
+        font-weight: 700;
+    }
+
+    .o_restaurant_pos_item_add {
+        position: absolute;
+        right: 0.55rem;
+        bottom: 0.55rem;
+        display: grid;
+        place-items: center;
+        width: 1.65rem;
+        height: 1.65rem;
+        border-radius: 50%;
+        background: #dcf6e9;
+        color: #075039;
+        font-weight: 700;
+    }
+
+    .o_restaurant_pos_cart {
+        display: flex;
+        flex-direction: column;
+        min-height: 480px;
+        position: sticky;
+        top: 1rem;
+    }
+
+    .o_restaurant_pos_empty {
+        flex: 1;
+        display: grid;
+        place-items: center;
+        color: #62717d;
+        text-align: center;
+    }
+
+    .o_restaurant_pos_lines {
+        flex: 1;
+        max-height: 52vh;
+        overflow-y: auto;
+    }
+
+    .o_restaurant_pos_line {
+        padding: 0.8rem 0;
+        border-bottom: 1px solid #edf0f2;
+    }
+
+    .o_restaurant_pos_line_main,
+    .o_restaurant_pos_line_bottom,
+    .o_restaurant_pos_total,
+    .o_restaurant_pos_payment_change,
+    .o_restaurant_pos_receipt_line {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+
+    .o_restaurant_pos_line_main {
+        flex-direction: column;
+        gap: 0.1rem;
+
+        small { color: #62717d; }
+    }
+
+    .o_restaurant_pos_line_bottom {
+        align-items: center;
+        margin-top: 0.5rem;
+    }
+
+    .o_restaurant_pos_qty {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.7rem;
+
+        button {
+            width: 1.8rem;
+            height: 1.8rem;
+            border: 1px solid #c8d3d0;
+            border-radius: 0.35rem;
+            background: #fff;
+        }
+    }
+
+    .o_restaurant_pos_cart_footer {
+        margin-top: auto;
+        padding-top: 1rem;
+    }
+
+    .o_restaurant_pos_total {
+        margin-bottom: 1rem;
+        padding-top: 0.8rem;
+        border-top: 2px solid #d9e0e7;
+        font-size: 1.2rem;
+    }
+
+    .o_restaurant_pos_payment,
+    .o_restaurant_pos_receipt {
+        max-width: 480px;
+        margin: 1rem auto;
+    }
+
+    .o_restaurant_pos_payment_card,
+    .o_restaurant_pos_receipt_card {
+        padding: 1.5rem;
+    }
+
+    .o_restaurant_pos_payment_total {
+        margin: 1.2rem 0;
+        font-size: 2rem;
+        font-weight: 700;
+    }
+
+    .o_restaurant_pos_payment_change {
+        margin: 1rem 0;
+        font-size: 1.1rem;
+    }
+
+    .o_restaurant_pos_receipt_line {
+        padding: 0.55rem 0;
+        border-bottom: 1px solid #edf0f2;
+    }
+
+    .o_restaurant_pos_receipt_total {
+        margin-top: 0.7rem;
+        border-top: 2px solid #d9e0e7;
+        font-size: 1.15rem;
+    }
+
+    @media (max-width: 900px) {
+        .o_restaurant_pos_layout {
+            grid-template-columns: 1fr;
+        }
+
+        .o_restaurant_pos_cart {
+            position: static;
+            min-height: 0;
+        }
+    }
+
+    @media (max-width: 540px) {
+        .o_restaurant_pos_catalog_tools {
+            align-items: stretch;
+            flex-direction: column;
+        }
+
+        .o_restaurant_pos_search {
+            max-width: none;
+        }
+
+        .o_restaurant_pos_items {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+}

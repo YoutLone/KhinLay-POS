@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_restaurant_pos_reports" name="Reports"
+        parent="menu_restaurant_pos_root" sequence="50"
+        groups="restaurant_pos.group_restaurant_admin"/>
+    <menuitem id="menu_restaurant_pos_daily_income" name="Daily Income"
+        parent="menu_restaurant_pos_reports" action="action_restaurant_daily_income"
+        sequence="10" groups="restaurant_pos.group_restaurant_admin"/>
+    <menuitem id="menu_restaurant_pos_daily_profit" name="Daily Profit and Loss"
+        parent="menu_restaurant_pos_reports" action="action_restaurant_profit_loss_day"
+        sequence="15" groups="restaurant_pos.group_restaurant_admin"/>
+    <menuitem id="menu_restaurant_pos_paid_orders" name="Paid Orders"
+        parent="menu_restaurant_pos_reports" action="action_restaurant_paid_orders"
+        sequence="20" groups="restaurant_pos.group_restaurant_admin"/>
+    <menuitem id="menu_restaurant_pos_weekly_profit" name="Weekly Profit and Loss"
+        parent="menu_restaurant_pos_reports" action="action_restaurant_profit_loss_week"
+        sequence="30" groups="restaurant_pos.group_restaurant_admin"/>
+    <menuitem id="menu_restaurant_pos_monthly_profit" name="Monthly Profit and Loss"
+        parent="menu_restaurant_pos_reports" action="action_restaurant_profit_loss_month"
+        sequence="40" groups="restaurant_pos.group_restaurant_admin"/>
+    <menuitem id="menu_restaurant_pos_print_report" name="Print PDF"
+        parent="menu_restaurant_pos_reports" action="action_restaurant_report_wizard"
+        sequence="50" groups="restaurant_pos.group_restaurant_admin"/>
+</odoo>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_restaurant_pos_expenses" name="Expenses"
+        parent="menu_restaurant_pos_root" action="action_restaurant_expenses"
+        sequence="40" groups="restaurant_pos.group_restaurant_seller"/>
+</odoo>

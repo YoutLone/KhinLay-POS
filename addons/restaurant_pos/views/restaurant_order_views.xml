@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_restaurant_order_list" model="ir.ui.view">
+        <field name="name">restaurant.order.list</field>
+        <field name="model">restaurant.order</field>
+        <field name="arch" type="xml">
+            <list string="Orders" decoration-success="state == 'paid'"
+                decoration-muted="state == 'cancelled'">
+                <field name="name"/>
+                <field name="order_date"/>
+                <field name="seller_id"/>
+                <field name="table_id" optional="show"/>
+                <field name="currency_id" column_invisible="True"/>
+                <field name="total_amount" widget="monetary"
+                    options="{'currency_field': 'currency_id'}"/>
+                <field name="payment_method"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_restaurant_order_form" model="ir.ui.view">
+        <field name="name">restaurant.order.form</field>
+        <field name="model">restaurant.order</field>
+        <field name="arch" type="xml">
+            <form string="Restaurant Order">
+                <header>
+                    <button name="action_pay" type="object" string="Mark as Paid"
+                        class="btn-primary" invisible="state != 'draft'"
+                        groups="restaurant_pos.group_restaurant_seller"/>
+                    <button name="action_cancel" type="object" string="Cancel Order"
+                        invisible="state == 'cancelled'"
+                        groups="restaurant_pos.group_restaurant_admin"/>
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="draft,paid,cancelled"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="table_id" readonly="1"/>
+                            <field name="seller_id" readonly="state != 'draft'"
+                                groups="restaurant_pos.group_restaurant_admin"/>
+                            <field name="seller_id" readonly="1"
+                                groups="restaurant_pos.group_restaurant_seller,!restaurant_pos.group_restaurant_admin"/>
+                            <field name="order_date" readonly="state != 'draft'"
+                                groups="restaurant_pos.group_restaurant_admin"/>
+                            <field name="order_date" readonly="1"
+                                groups="restaurant_pos.group_restaurant_seller,!restaurant_pos.group_restaurant_admin"/>
+                        </group>
+                        <group>
+                            <field name="payment_method" readonly="1"/>
+                            <field name="currency_id" readonly="state != 'draft' or order_line_ids"
+                                groups="restaurant_pos.group_restaurant_admin"/>
+                            <field name="currency_id" readonly="1"
+                                groups="restaurant_pos.group_restaurant_seller,!restaurant_pos.group_restaurant_admin"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Order Lines">
+                            <field name="order_line_ids" readonly="state != 'draft'">
+                                <list editable="bottom">
+                                    <field name="menu_item_id"
+                                        domain="[('in_stock', '=', True)]"/>
+                                    <field name="qty"/>
+                                    <field name="currency_id" column_invisible="True"/>
+                                    <field name="unit_price" widget="monetary" readonly="1"
+                                        options="{'currency_field': 'currency_id'}"/>
+                                    <field name="subtotal" widget="monetary" readonly="1"
+                                        options="{'currency_field': 'currency_id'}"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                    <group class="oe_subtotal_footer oe_right">
+                        <field name="total_amount" widget="monetary" readonly="1"
+                            options="{'currency_field': 'currency_id'}"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_restaurant_order_search" model="ir.ui.view">
+        <field name="name">restaurant.order.search</field>
+        <field name="model">restaurant.order</field>
+        <field name="arch" type="xml">
+            <search string="Search Orders">
+                <field name="name"/>
+                <field name="seller_id"/>
+                <field name="table_id"/>
+                <field name="order_date"/>
+                <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+                <filter name="paid" string="Paid" domain="[('state', '=', 'paid')]"/>
+                <filter name="cancelled" string="Cancelled"
+                    domain="[('state', '=', 'cancelled')]"/>
+                <group>
+                    <filter name="group_by_seller" string="Seller"
+                        context="{'group_by': 'seller_id'}"/>
+                    <filter name="group_by_order_day" string="Order Day"
+                        context="{'group_by': 'order_date:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_restaurant_orders" model="ir.actions.act_window">
+        <field name="name">Orders</field>
+        <field name="res_model">restaurant.order</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_restaurant_order_search"/>
+    </record>
+</odoo>

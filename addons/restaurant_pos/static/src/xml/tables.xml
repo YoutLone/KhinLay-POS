@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+    <t t-name="restaurant_pos.Tables">
+        <div class="o_restaurant_tables h-100 overflow-auto p-3">
+            <div t-if="state.error" class="alert alert-danger" role="alert" t-esc="state.error"/>
+
+            <t t-if="state.view === 'tables'">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <h2 class="mb-1">Dining Tables</h2>
+                        <div class="text-muted">Select a table to create or continue its order.</div>
+                    </div>
+                    <button class="btn btn-outline-primary" t-on-click="loadBoard">Refresh</button>
+                </div>
+                <div t-if="state.loading" class="text-muted">Loading tables…</div>
+                <div t-elif="!state.floors.length" class="alert alert-info">
+                    No dining floors are configured. Add a floor under Restaurant POS Settings.
+                </div>
+                <t t-else="">
+                    <nav class="d-flex gap-2 flex-wrap mb-3" aria-label="Dining floors">
+                        <button t-foreach="state.floors" t-as="floor" t-key="floor.id"
+                            t-att-class="floor.id === state.activeFloorId ? 'btn btn-primary' : 'btn btn-outline-secondary'"
+                            t-on-click="() => selectFloor(floor.id)">
+                            <t t-esc="floor.name"/>
+                        </button>
+                    </nav>
+                    <div class="d-flex gap-3 align-items-center mb-2 small">
+                        <span><i class="o_table_legend o_table_legend_available"/> Available</span>
+                        <span><i class="o_table_legend o_table_legend_occupied"/> Open order</span>
+                    </div>
+                    <div class="o_restaurant_floor_scroll">
+                        <div class="o_restaurant_floor" t-att-style="floorStyle(currentFloor)">
+                            <button t-foreach="currentFloor.tables" t-as="table" t-key="table.id"
+                                type="button"
+                                t-att-class="'o_restaurant_table ' + (table.status === 'occupied' ? 'o_restaurant_table_occupied ' : 'o_restaurant_table_available ') + (table.shape === 'round' ? 'o_restaurant_table_round' : '')"
+                                t-att-style="tableStyle(table)"
+                                t-att-disabled="state.busyTableId !== null"
+                                t-on-click="() => openTable(table)">
+                                <strong>Table <t t-esc="table.number"/></strong>
+                                <span class="o_restaurant_table_status"
+                                    t-esc="table.status === 'occupied' ? 'Open order' : 'Available'"/>
+                                <span t-if="table.status === 'occupied'" class="o_restaurant_table_total"
+                                    t-esc="formatMoney(table.total)"/>
+                            </button>
+                        </div>
+                    </div>
+                </t>
+            </t>
+
+            <t t-elif="state.view === 'order'">
+                <header class="o_restaurant_pos_header">
+                    <button type="button" class="btn btn-outline-secondary" t-on-click="backToTables">
+                        ← Tables
+                    </button>
+                    <div>
+                        <h2 class="mb-0">Table <t t-esc="state.order.table_number"/></h2>
+                        <div class="text-muted small">
+                            <t t-esc="state.order.floor_name"/> · <t t-esc="state.order.name"/>
+                        </div>
+                    </div>
+                </header>
+                <div class="o_restaurant_pos_layout">
+                    <section class="o_restaurant_pos_catalog" aria-label="Available menu">
+                        <div class="o_restaurant_pos_catalog_tools">
+                            <h3 class="mb-0">Menu</h3>
+                            <input type="search" class="form-control o_restaurant_pos_search"
+                                placeholder="Search menu items" aria-label="Search menu items"
+                                t-att-value="state.search" t-on-input="onSearchInput"/>
+                        </div>
+                        <nav class="o_restaurant_pos_categories" aria-label="Menu categories">
+                            <button type="button"
+                                t-att-class="!state.activeCategoryId ? 'btn btn-primary' : 'btn btn-outline-secondary'"
+                                t-on-click="() => selectCategory(null)">All</button>
+                            <button t-foreach="state.categories" t-as="category" t-key="category.id"
+                                type="button"
+                                t-att-class="category.id === state.activeCategoryId ? 'btn btn-primary' : 'btn btn-outline-secondary'"
+                                t-on-click="() => selectCategory(category.id)">
+                                <t t-esc="category.name"/>
+                            </button>
+                        </nav>
+                        <div t-if="!visibleItems.length" class="alert alert-info mt-3">
+                            No available menu items match this selection.
+                        </div>
+                        <div t-else="" class="o_restaurant_pos_items">
+                            <button t-foreach="visibleItems" t-as="item" t-key="item.id"
+                                type="button" class="o_restaurant_pos_item"
+                                t-att-disabled="state.busy" t-on-click="() => addItem(item)">
+                                <img t-if="item.has_image" t-att-src="itemImageUrl(item)"
+                                    t-att-alt="item.name" loading="lazy"/>
+                                <span t-else="" class="o_restaurant_pos_item_placeholder">🍽</span>
+                                <span class="o_restaurant_pos_item_details">
+                                    <strong t-esc="item.name"/>
+                                    <small t-if="item.description" t-esc="item.description"/>
+                                    <span class="o_restaurant_pos_item_price" t-esc="formatMoney(item.price)"/>
+                                </span>
+                                <span class="o_restaurant_pos_item_add" aria-hidden="true">+</span>
+                            </button>
+                        </div>
+                    </section>
+                    <aside class="o_restaurant_pos_cart" aria-label="Current order">
+                        <h3>Current Order</h3>
+                        <div t-if="!state.order.lines.length" class="o_restaurant_pos_empty">
+                            Select menu items to start this table's order.
+                        </div>
+                        <div t-else="" class="o_restaurant_pos_lines">
+                            <div t-foreach="state.order.lines" t-as="line" t-key="line.id"
+                                class="o_restaurant_pos_line">
+                                <div class="o_restaurant_pos_line_main">
+                                    <strong t-esc="line.name"/>
+                                    <small t-esc="formatMoney(line.unit_price)"/>
+                                </div>
+                                <div class="o_restaurant_pos_line_bottom">
+                                    <div class="o_restaurant_pos_qty" aria-label="Quantity">
+                                        <button type="button" aria-label="Decrease quantity"
+                                            t-att-disabled="state.busy"
+                                            t-on-click="() => changeQuantity(line, -1)">−</button>
+                                        <span t-esc="line.qty"/>
+                                        <button type="button" aria-label="Increase quantity"
+                                            t-att-disabled="state.busy"
+                                            t-on-click="() => changeQuantity(line, 1)">+</button>
+                                    </div>
+                                    <strong t-esc="formatMoney(line.subtotal)"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="o_restaurant_pos_cart_footer">
+                            <div class="o_restaurant_pos_total">
+                                <strong>Total</strong>
+                                <strong t-esc="formatMoney(state.order.total)"/>
+                            </div>
+                            <button type="button" class="btn btn-primary btn-lg w-100"
+                                t-att-disabled="state.busy || !state.order.lines.length"
+                                t-on-click="startPayment">Payment</button>
+                            <div class="text-muted small text-center mt-2">Items are saved as you add them.</div>
+                        </div>
+                    </aside>
+                </div>
+            </t>
+
+            <t t-elif="state.view === 'payment'">
+                <div class="o_restaurant_pos_payment">
+                    <button type="button" class="btn btn-outline-secondary mb-4"
+                        t-on-click="backToOrder">← Back to Order</button>
+                    <div class="o_restaurant_pos_payment_card">
+                        <div class="text-muted">Table <t t-esc="state.order.table_number"/></div>
+                        <h2>Cash Payment</h2>
+                        <div class="o_restaurant_pos_payment_total"
+                            t-esc="formatMoney(state.order.total)"/>
+                        <label for="restaurant_cash_received" class="form-label">Cash received</label>
+                        <input id="restaurant_cash_received" type="number" min="0" step="any"
+                            class="form-control form-control-lg" inputmode="decimal"
+                            t-att-value="state.tendered" t-on-input="onTenderedInput"/>
+                        <div class="o_restaurant_pos_payment_change">
+                            <span>Change</span><strong t-esc="formatMoney(changeDue)"/>
+                        </div>
+                        <button type="button" class="btn btn-primary btn-lg w-100"
+                            t-att-disabled="state.busy" t-on-click="confirmPayment">
+                            Confirm Payment
+                        </button>
+                    </div>
+                </div>
+            </t>
+
+            <t t-elif="state.view === 'receipt' &amp;&amp; state.receipt">
+                <div class="o_restaurant_pos_receipt">
+                    <div class="o_restaurant_pos_receipt_card">
+                        <h2>Payment Complete</h2>
+                        <p class="text-muted">Table <t t-esc="state.receipt.order.table_number"/> ·
+                            <t t-esc="state.receipt.order.name"/></p>
+                        <div t-foreach="state.receipt.order.lines" t-as="line" t-key="line.id"
+                            class="o_restaurant_pos_receipt_line">
+                            <span><t t-esc="line.qty"/> × <t t-esc="line.name"/></span>
+                            <strong t-esc="formatMoney(line.subtotal, state.receipt.order.currency)"/>
+                        </div>
+                        <div class="o_restaurant_pos_receipt_line o_restaurant_pos_receipt_total">
+                            <span>Total</span>
+                            <strong t-esc="formatMoney(state.receipt.order.total, state.receipt.order.currency)"/>
+                        </div>
+                        <div class="o_restaurant_pos_receipt_line">
+                            <span>Cash received</span>
+                            <span t-esc="formatMoney(state.receipt.cash_received, state.receipt.order.currency)"/>
+                        </div>
+                        <div class="o_restaurant_pos_receipt_line">
+                            <span>Change</span>
+                            <span t-esc="formatMoney(state.receipt.change, state.receipt.order.currency)"/>
+                        </div>
+                        <button type="button" class="btn btn-primary btn-lg w-100 mt-4"
+                            t-on-click="backToTables">Back to Tables</button>
+                    </div>
+                </div>
+            </t>
+        </div>
+    </t>
+</templates>

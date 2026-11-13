@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+    <t t-name="restaurant_pos.Dashboard" owl="1">
+        <div class="o_restaurant_dashboard p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h1 class="h3 mb-1">Restaurant Dashboard</h1>
+                    <p class="text-muted mb-0" t-if="state.summary">
+                        Summary for <t t-esc="state.summary.date"/>
+                    </p>
+                </div>
+                <button class="btn btn-outline-primary" t-on-click="loadSummary">Refresh</button>
+            </div>
+            <div t-if="state.loading" class="text-muted">Loading summary...</div>
+            <div t-elif="state.error" class="alert alert-danger" role="alert">
+                <t t-esc="state.error"/>
+            </div>
+            <div t-else="" class="row g-3">
+                <div class="col-12 col-md-6 col-xl">
+                    <div class="card o_restaurant_kpi h-100">
+                        <div class="card-body">
+                            <div class="text-muted">Today's Income</div>
+                            <div class="h3 mb-0" t-esc="formatMoney(state.summary.today_income)"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-xl">
+                    <div class="card o_restaurant_kpi h-100">
+                        <div class="card-body">
+                            <div class="text-muted">Today's Expenses</div>
+                            <div class="h3 mb-0" t-esc="formatMoney(state.summary.today_expenses)"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-xl">
+                    <div class="card o_restaurant_kpi h-100">
+                        <div class="card-body">
+                            <div class="text-muted">Paid Orders</div>
+                            <div class="h3 mb-0" t-esc="state.summary.paid_orders"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-xl">
+                    <div class="card o_restaurant_kpi h-100">
+                        <div class="card-body">
+                            <div class="text-muted">Today's Cash Profit / Loss</div>
+                            <div class="h3 mb-0" t-esc="formatMoney(state.summary.today_profit)"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-xl">
+                    <div class="card o_restaurant_kpi h-100">
+                        <div class="card-body">
+                            <div class="text-muted">Low Stock Ingredients</div>
+                            <div class="h3 mb-0" t-esc="state.summary.low_stock_count"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

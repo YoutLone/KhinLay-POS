@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_restaurant_pos_orders" name="Orders"
+        parent="menu_restaurant_pos_root"
+        sequence="10" groups="restaurant_pos.group_restaurant_seller"/>
+    <menuitem id="menu_restaurant_pos_quick_orders" name="Quick Orders"
+        parent="menu_restaurant_pos_orders" action="action_restaurant_orders"
+        sequence="10" groups="restaurant_pos.group_restaurant_seller"/>
+</odoo>

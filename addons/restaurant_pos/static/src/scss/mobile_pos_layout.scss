@@ -1,0 +1,91 @@
+@media (max-width: 767.98px) {
+    .pos .pos-content {
+        min-height: 0;
+    }
+
+    .pos .product-screen {
+        min-height: 0;
+    }
+
+    .pos .product-screen .leftpane,
+    .pos .product-screen .rightpane {
+        height: 100%;
+        min-height: 0;
+        min-width: 0;
+        overflow-y: auto;
+        padding-bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px)) !important;
+    }
+
+    .pos .product-screen .leftpane .pads,
+    .pos .product-screen .rightpane .restaurant-pos-mobile-notes,
+    .pos .product-screen .rightpane .switchpane {
+        flex-shrink: 0;
+    }
+
+    .pos .product-screen .rightpane > .position-relative {
+        min-height: 18rem;
+        flex-shrink: 0;
+    }
+
+    .pos .payment-screen {
+        padding-bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px)) !important;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .modal.o_modal_full .modal-dialog.restaurant-pos-text-input-dialog {
+        position: fixed;
+        inset: auto 0 var(--restaurant-pos-keyboard-inset, 0px);
+        width: 100%;
+        max-width: 100%;
+        min-height: 0 !important;
+        height: var(--restaurant-pos-visible-height, 92dvh);
+        max-height: 92dvh;
+        margin: 0;
+    }
+
+    .modal.o_modal_full .restaurant-pos-text-input-dialog .modal-content {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        max-height: 100%;
+        min-height: 0;
+        overflow: hidden;
+    }
+
+    .modal.o_modal_full .restaurant-pos-text-input-dialog .modal-body {
+        flex: 1 1 auto;
+        height: auto;
+        min-height: 0;
+        overflow-y: auto;
+    }
+
+    .modal.o_modal_full .restaurant-pos-text-input-dialog .modal-footer {
+        flex: 0 0 auto;
+        background: var(--bs-modal-bg, #fff);
+        padding-bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px));
+    }
+
+    .restaurant-pos-note-actions {
+        display: flex;
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        background: var(--bs-modal-bg, #fff);
+    }
+
+    .restaurant-pos-navbar-menu {
+        width: calc(100vw - 1rem);
+        max-width: 22rem;
+        max-height: calc(100dvh - 4rem);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+@media (min-width: 768px) {
+    .restaurant-pos-note-actions {
+        display: none;
+    }
+}

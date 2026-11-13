@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_pos_details_wizard_calendar_dates" model="ir.ui.view">
+        <field name="name">pos.details.wizard.calendar.dates</field>
+        <field name="model">pos.details.wizard</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_details_wizard"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='start_date']" position="replace">
+                <field name="date_from"/>
+            </xpath>
+            <xpath expr="//field[@name='end_date']" position="replace">
+                <field name="date_to"/>
+            </xpath>
+            <xpath expr="//field[@name='pos_config_ids']" position="replace">
+                <field name="pos_config_ids" widget="many2many_tags" string="Registers"/>
+                <field name="sale_line_ids" readonly="1">
+                    <list string="Sales in Selected Dates" create="0" edit="0" delete="0">
+                        <field name="order_id"/>
+                        <field name="restaurant_sale_date"/>
+                        <field name="product_id"/>
+                        <field name="qty"/>
+                        <field name="price_unit"/>
+                        <field name="price_subtotal_incl" string="Line Total"/>
+                    </list>
+                </field>
+            </xpath>
+        </field>
+    </record>
+</odoo>

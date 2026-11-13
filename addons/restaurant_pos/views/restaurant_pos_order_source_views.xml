@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_pos_order_grabfood_form" model="ir.ui.view">
+        <field name="name">pos.order.grabfood.form</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='source']" position="attributes">
+                <attribute name="string">Order Source</attribute>
+                <attribute name="widget">badge</attribute>
+                <attribute name="decoration-info">source == 'grabfood'</attribute>
+            </xpath>
+            <xpath expr="//page[@name='notes']/field[@name='general_customer_note']" position="replace">
+                <group string="Order Customer Note">
+                    <field name="general_customer_note" readonly="1" nolabel="1"/>
+                </group>
+                <group string="Product Customer Notes">
+                    <field name="lines" readonly="1" nolabel="1"
+                        domain="[('customer_note', '!=', False)]">
+                        <list create="0" edit="0" delete="0">
+                            <field name="product_id"/>
+                            <field name="customer_note"/>
+                        </list>
+                    </field>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_pos_order_grabfood_list" model="ir.ui.view">
+        <field name="name">pos.order.grabfood.list</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_order_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='state']" position="after">
+                <field name="source" string="Order Source" widget="badge"
+                    decoration-info="source == 'grabfood'" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_pos_order_grabfood_kanban" model="ir.ui.view">
+        <field name="name">pos.order.grabfood.kanban</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_order_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//footer/field[@name='state']" position="after">
+                <span class="ms-2 text-muted">Source:</span>
+                <field name="source" widget="badge"
+                    decoration-info="source == 'grabfood'"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_pos_order_grabfood_search" model="ir.ui.view">
+        <field name="name">pos.order.grabfood.search</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_order_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='config_id']" position="after">
+                <field name="source" string="Order Source"/>
+                <filter name="grabfood_orders" string="GrabFood"
+                    domain="[('source', '=', 'grabfood')]"/>
+                <group>
+                    <filter name="group_by_order_source" string="Order Source"
+                        context="{'group_by': 'source'}"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_pos_order_grabfood_filter" model="ir.ui.view">
+        <field name="name">pos.order.grabfood.filter</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_order_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='config_id']" position="after">
+                <field name="source" string="Order Source"/>
+                <filter name="grabfood_orders" string="GrabFood"
+                    domain="[('source', '=', 'grabfood')]"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

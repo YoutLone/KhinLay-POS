@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_restaurant_pos_settings" name="Settings"
+        parent="menu_restaurant_pos_root" sequence="60"
+        groups="restaurant_pos.group_restaurant_admin"/>
+    <menuitem id="menu_restaurant_pos_settings_categories" name="Menu Categories"
+        parent="menu_restaurant_pos_settings" action="action_restaurant_menu_categories"
+        sequence="10" groups="restaurant_pos.group_restaurant_admin"/>
+    <menuitem id="menu_restaurant_pos_settings_recipes" name="Recipes"
+        parent="menu_restaurant_pos_settings" action="action_restaurant_recipes"
+        sequence="20" groups="restaurant_pos.group_restaurant_admin"/>
+    <menuitem id="menu_restaurant_pos_settings_floors" name="Dining Floors"
+        parent="menu_restaurant_pos_settings" action="action_restaurant_dining_floors"
+        sequence="30" groups="restaurant_pos.group_restaurant_admin"/>
+    <menuitem id="menu_restaurant_pos_settings_tables" name="Dining Tables"
+        parent="menu_restaurant_pos_settings" action="action_restaurant_dining_tables"
+        sequence="40" groups="restaurant_pos.group_restaurant_admin"/>
+</odoo>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_restaurant_financial" model="ir.actions.report">
+        <field name="name">Restaurant Financial Report</field>
+        <field name="model">restaurant.report.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">restaurant_pos.report_restaurant_financial_document</field>
+        <field name="report_file">restaurant_pos.report_restaurant_financial_document</field>
+        <field name="group_ids" eval="[Command.link(ref('restaurant_pos.group_restaurant_admin'))]"/>
+    </record>
+
+    <template id="report_restaurant_financial_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Restaurant Financial Report</h2>
+                        <p>
+                            <strong>Period:</strong>
+                            <span t-field="doc.date_from"/> to <span t-field="doc.date_to"/>
+                        </p>
+                        <p><strong>Type:</strong> <span t-field="doc.report_type"/></p>
+                        <p><strong>Company:</strong> <span t-field="doc.company_id"/></p>
+                        <table class="table table-sm">
+                            <tbody>
+                                <tr><th>Income</th><td class="text-end">
+                                    <span t-field="doc.income" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
+                                </td></tr>
+                                <tr><th>Expenses</th><td class="text-end">
+                                    <span t-field="doc.expenses" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
+                                </td></tr>
+                                <tr><th>Recipe Cost (Reference)</th><td class="text-end">
+                                    <span t-field="doc.ingredient_cost" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
+                                </td></tr>
+                                <tr><th>Cash Profit / Loss</th><td class="text-end">
+                                    <span t-field="doc.profit" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
+                                </td></tr>
+                            </tbody>
+                        </table>
+                        <t t-set="report_data" t-value="doc.get_report_data()"/>
+                        <h3>Income by Seller</h3>
+                        <table class="table table-sm">
+                            <thead><tr><th>Seller</th><th>Orders</th><th class="text-end">Cash Collected</th></tr></thead>
+                            <tbody>
+                                <tr t-foreach="report_data['seller_totals']" t-as="row">
+                                    <td><span t-esc="row[0].name"/></td>
+                                    <td><span t-esc="row[1]"/></td>
+                                    <td class="text-end"><span t-esc="row[2]"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h3>Sales Details</h3>
+                        <table class="table table-sm">
+                            <thead><tr><th>Order</th><th>Date</th><th>Seller</th><th>Source</th><th>Items</th><th class="text-end">Amount</th></tr></thead>
+                            <tbody>
+                                <tr t-foreach="report_data['sales']" t-as="sale">
+                                    <td><span t-esc="sale['name']"/></td>
+                                    <td><span t-esc="sale['date']"/></td>
+                                    <td><span t-esc="sale['seller']"/></td>
+                                    <td><span t-esc="sale['source']"/></td>
+                                    <td><span t-esc="sale['items']"/></td>
+                                    <td class="text-end"><span t-esc="sale['amount']" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

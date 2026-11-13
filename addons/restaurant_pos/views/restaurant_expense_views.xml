@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_restaurant_expense_list" model="ir.ui.view">
+        <field name="name">restaurant.expense.list</field>
+        <field name="model">restaurant.expense</field>
+        <field name="arch" type="xml">
+            <list string="Expenses" editable="bottom">
+                <field name="date"/>
+                <field name="description"/>
+                <field name="category"/>
+                <field name="quantity"/>
+                <field name="purchased_by"/>
+                <field name="currency_id" column_invisible="True"/>
+                <field name="amount" widget="monetary"
+                    options="{'currency_field': 'currency_id'}"/>
+                <field name="unit_price" widget="monetary" readonly="1"
+                    options="{'currency_field': 'currency_id'}"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_restaurant_expense_form" model="ir.ui.view">
+        <field name="name">restaurant.expense.form</field>
+        <field name="model">restaurant.expense</field>
+        <field name="arch" type="xml">
+            <form string="Expense">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="description"/>
+                            <field name="category"/>
+                            <field name="quantity"/>
+                            <field name="date"/>
+                            <field name="purchased_by" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="amount" widget="monetary"
+                                options="{'currency_field': 'currency_id'}"/>
+                            <field name="unit_price" widget="monetary" readonly="1"
+                                options="{'currency_field': 'currency_id'}"/>
+                            <field name="currency_id" readonly="1"/>
+                            <field name="receipt_filename" invisible="1"/>
+                            <field name="receipt" filename="receipt_filename"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_restaurant_expense_search" model="ir.ui.view">
+        <field name="name">restaurant.expense.search</field>
+        <field name="model">restaurant.expense</field>
+        <field name="arch" type="xml">
+            <search string="Search Expenses">
+                <field name="description"/>
+                <field name="purchased_by"/>
+                <filter name="today" string="Today"
+                    domain="[('date', '=', context_today())]"/>
+                <filter name="expense_date" string="Date" date="date"/>
+                <group>
+                    <filter name="group_by_category" string="Category"
+                        context="{'group_by': 'category'}"/>
+                    <filter name="group_by_purchaser" string="Purchased By"
+                        context="{'group_by': 'purchased_by'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_restaurant_expenses" model="ir.actions.act_window">
+        <field name="name">Expenses</field>
+        <field name="res_model">restaurant.expense</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_restaurant_expense_search"/>
+    </record>
+</odoo>

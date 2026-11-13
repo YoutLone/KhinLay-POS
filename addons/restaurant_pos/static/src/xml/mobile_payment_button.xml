@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="restaurant_pos.MobilePaymentButton"
+       t-inherit="point_of_sale.Navbar" t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('status-buttons')]/Dropdown" position="before">
+            <button t-if="ui.isSmall and pos.router.state.current === 'ProductScreen'"
+                    type="button"
+                    class="btn btn-primary btn-lg lh-lg flex-shrink-0 px-2"
+                    aria-label="Pay current order"
+                    t-att-disabled="!pos.getOrder() or pos.getOrder().isEmpty()"
+                    t-on-click="() => pos.pay()">
+                <i class="fa fa-credit-card me-1" aria-hidden="true"/>Pay
+            </button>
+        </xpath>
+    </t>
+</templates>

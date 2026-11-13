@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_restaurant_dashboard" model="ir.actions.client">
+        <field name="name">Restaurant Dashboard</field>
+        <field name="tag">restaurant_pos.Dashboard</field>
+    </record>
+    <menuitem id="menu_restaurant_pos_dashboard" name="Dashboard"
+        parent="menu_restaurant_pos_root" action="action_restaurant_dashboard"
+        sequence="5" groups="restaurant_pos.group_restaurant_admin"/>
+</odoo>

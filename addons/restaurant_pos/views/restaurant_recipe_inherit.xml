@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_restaurant_menu_item_form_recipe" model="ir.ui.view">
+        <field name="name">restaurant.menu.item.form.recipe</field>
+        <field name="model">restaurant.menu.item</field>
+        <field name="inherit_id" ref="view_restaurant_menu_item_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <notebook groups="restaurant_pos.group_restaurant_admin">
+                    <page string="Recipe">
+                        <field name="recipe_ids">
+                            <list editable="bottom">
+                                <field name="ingredient_id"/>
+                                <field name="qty_per_item"/>
+                                <field name="unit_of_measure" readonly="1"/>
+                            </list>
+                        </field>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+</odoo>

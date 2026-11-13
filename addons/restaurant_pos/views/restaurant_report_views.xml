@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_restaurant_daily_income_list" model="ir.ui.view">
+        <field name="name">restaurant.daily.income.list</field>
+        <field name="model">restaurant.daily.income</field>
+        <field name="arch" type="xml">
+            <list string="Daily Income" create="0" edit="0" delete="0">
+                <field name="date"/>
+                <field name="company_id"/>
+                <field name="seller_id"/>
+                <field name="order_count"/>
+                <field name="currency_id" column_invisible="True"/>
+                <field name="total_cash" string="Total Sales" widget="monetary"
+                    options="{'currency_field': 'currency_id'}"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_restaurant_daily_income_pivot" model="ir.ui.view">
+        <field name="name">restaurant.daily.income.pivot</field>
+        <field name="model">restaurant.daily.income</field>
+        <field name="arch" type="xml">
+            <pivot string="Daily Income">
+                <field name="company_id" type="row"/>
+                <field name="date" type="row" interval="day"/>
+                <field name="seller_id" type="col"/>
+                <field name="total_cash" type="measure"/>
+                <field name="order_count" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="action_restaurant_daily_income" model="ir.actions.act_window">
+        <field name="name">Daily Income</field>
+        <field name="res_model">restaurant.daily.income</field>
+        <field name="view_mode">list,pivot</field>
+    </record>
+
+    <record id="action_restaurant_paid_orders" model="ir.actions.act_window">
+        <field name="name">Paid Orders</field>
+        <field name="res_model">restaurant.order</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', '=', 'paid')]</field>
+    </record>
+
+    <record id="view_restaurant_profit_loss_list" model="ir.ui.view">
+        <field name="name">restaurant.profit.loss.report.list</field>
+        <field name="model">restaurant.profit.loss.report</field>
+        <field name="arch" type="xml">
+            <list string="Profit and Loss" create="0" edit="0" delete="0">
+                <field name="date"/>
+                <field name="company_id"/>
+                <field name="currency_id" column_invisible="True"/>
+                <field name="income" widget="monetary"
+                    options="{'currency_field': 'currency_id'}"/>
+                <field name="expenses" widget="monetary"
+                    options="{'currency_field': 'currency_id'}"/>
+                <field name="ingredient_cost" string="Recipe Cost (Reference)" widget="monetary"
+                    options="{'currency_field': 'currency_id'}"/>
+                <field name="profit" string="Cash Profit / Loss" widget="monetary"
+                    options="{'currency_field': 'currency_id'}"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_restaurant_profit_loss_day" model="ir.actions.act_window">
+        <field name="name">Daily Profit and Loss</field>
+        <field name="res_model">restaurant.profit.loss.report</field>
+        <field name="view_mode">list,pivot,graph</field>
+        <field name="view_id" ref="view_restaurant_profit_loss_list"/>
+    </record>
+
+    <record id="view_restaurant_profit_loss_week_graph" model="ir.ui.view">
+        <field name="name">restaurant.profit.loss.report.week.graph</field>
+        <field name="model">restaurant.profit.loss.report</field>
+        <field name="arch" type="xml">
+            <graph string="Weekly Profit and Loss" type="bar">
+                <field name="company_id" type="row"/>
+                <field name="date" type="row" interval="week"/>
+                <field name="income" type="measure"/>
+                <field name="expenses" type="measure"/>
+                <field name="ingredient_cost" string="Recipe Cost (Reference)" type="measure"/>
+                <field name="profit" string="Cash Profit / Loss" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_restaurant_profit_loss_month_graph" model="ir.ui.view">
+        <field name="name">restaurant.profit.loss.report.month.graph</field>
+        <field name="model">restaurant.profit.loss.report</field>
+        <field name="arch" type="xml">
+            <graph string="Monthly Profit and Loss" type="bar">
+                <field name="company_id" type="row"/>
+                <field name="date" type="row" interval="month"/>
+                <field name="income" type="measure"/>
+                <field name="expenses" type="measure"/>
+                <field name="ingredient_cost" string="Recipe Cost (Reference)" type="measure"/>
+                <field name="profit" string="Cash Profit / Loss" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_restaurant_profit_loss_pivot" model="ir.ui.view">
+        <field name="name">restaurant.profit.loss.report.pivot</field>
+        <field name="model">restaurant.profit.loss.report</field>
+        <field name="arch" type="xml">
+            <pivot string="Profit and Loss">
+                <field name="company_id" type="row"/>
+                <field name="date" type="row" interval="month"/>
+                <field name="income" type="measure"/>
+                <field name="expenses" type="measure"/>
+                <field name="ingredient_cost" string="Recipe Cost (Reference)" type="measure"/>
+                <field name="profit" string="Cash Profit / Loss" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="action_restaurant_profit_loss_week" model="ir.actions.act_window">
+        <field name="name">Weekly Profit and Loss</field>
+        <field name="res_model">restaurant.profit.loss.report</field>
+        <field name="view_mode">graph,pivot,list</field>
+        <field name="view_id" ref="view_restaurant_profit_loss_week_graph"/>
+    </record>
+
+    <record id="action_restaurant_profit_loss_month" model="ir.actions.act_window">
+        <field name="name">Monthly Profit and Loss</field>
+        <field name="res_model">restaurant.profit.loss.report</field>
+        <field name="view_mode">graph,pivot,list</field>
+        <field name="view_id" ref="view_restaurant_profit_loss_month_graph"/>
+    </record>
+
+    <record id="view_restaurant_report_wizard_form" model="ir.ui.view">
+        <field name="name">restaurant.report.wizard.form</field>
+        <field name="model">restaurant.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Financial Report">
+                <group>
+                    <group>
+                        <field name="report_type"/>
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                        <field name="company_id"/>
+                    </group>
+                    <group>
+                        <field name="currency_id" invisible="1"/>
+                        <field name="income" widget="monetary" readonly="1"/>
+                        <field name="expenses" widget="monetary" readonly="1"/>
+                        <field name="ingredient_cost" string="Recipe Cost (Reference)" widget="monetary" readonly="1"/>
+                        <field name="profit" string="Cash Profit / Loss" widget="monetary" readonly="1"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_print" type="object" string="Print PDF"
+                        class="btn-primary"/>
+                    <button string="Close" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_restaurant_report_wizard" model="ir.actions.act_window">
+        <field name="name">Print Financial Report</field>
+        <field name="res_model">restaurant.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_restaurant_report_wizard_form"/>
+        <field name="target">new</field>
+    </record>
+
+    <record id="view_restaurant_sales_details_wizard_form" model="ir.ui.view">
+        <field name="name">restaurant.sales.details.wizard.form</field>
+        <field name="model">restaurant.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Sales Details">
+                <group>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                    <field name="company_id"/>
+                </group>
+                <footer>
+                    <button name="action_view_sales" type="object" string="View Sales"
+                        class="btn-primary"/>
+                    <button string="Close" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_restaurant_sales_details_wizard" model="ir.actions.act_window">
+        <field name="name">Sales Details</field>
+        <field name="res_model">restaurant.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_restaurant_sales_details_wizard_form"/>
+        <field name="target">new</field>
+    </record>
+</odoo>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="restaurant_pos.MobilePaymentScroll"
+       t-inherit="point_of_sale.PaymentScreen" t-inherit-mode="extension">
+        <xpath expr="//t[@t-if='ui.isSmall']/div[hasclass('payment-screen')]" position="attributes">
+            <attribute name="class" remove="overflow-hidden" add="overflow-y-auto" separator=" "/>
+        </xpath>
+        <xpath expr="//t[@t-if='ui.isSmall']/div[hasclass('payment-screen')]/div[hasclass('flex-grow-1')]" position="attributes">
+            <attribute name="class" remove="flex-grow-1 overflow-y-auto" add="flex-shrink-0" separator=" "/>
+        </xpath>
+    </t>
+</templates>

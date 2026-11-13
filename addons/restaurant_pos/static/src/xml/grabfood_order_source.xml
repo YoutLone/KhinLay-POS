@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="restaurant_pos.GrabFoodPaymentButton"
+       t-inherit="point_of_sale.PaymentScreenButtons" t-inherit-mode="extension">
+        <xpath expr="//button[hasclass('partner-button')]/.." position="after">
+            <button class="button btn btn-lg w-100 lh-lg"
+                    t-att-class="currentOrder.source === 'grabfood' ? 'btn-primary' : 'btn-secondary'"
+                    t-on-click="toggleGrabFoodSource">
+                <i class="fa fa-motorcycle me-2" role="img" aria-label="Order Source"/>
+                <span t-if="currentOrder.source === 'grabfood'">Source: GrabFood</span>
+                <span t-else="">Source: In Store</span>
+            </button>
+        </xpath>
+    </t>
+</templates>

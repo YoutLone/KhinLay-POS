@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="restaurant_pos.MobileOrderNotes"
+       t-inherit="point_of_sale.ProductScreen" t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('subpads')]/ActionpadWidget" position="before">
+            <div t-if="this.pos.isSmallProductScreen and currentOrder and !currentOrder.isEmpty()"
+                 class="d-flex gap-2">
+                <NoteButton label.translate="Customer Note"
+                            icon="'fa fa-sticky-note'"
+                            class="'btn btn-secondary btn-lg w-100 lh-lg'"/>
+            </div>
+        </xpath>
+        <xpath expr="//div[hasclass('rightpane')]/div[hasclass('position-relative')]/CategorySelector" position="after">
+            <div t-if="this.pos.isSmallProductScreen and currentOrder and !currentOrder.isEmpty() and !pos.scanning"
+                 class="restaurant-pos-mobile-notes d-flex gap-2 px-2 py-2 border-bottom bg-view">
+                <NoteButton label.translate="Customer Note"
+                            icon="'fa fa-sticky-note'"
+                            class="'btn btn-secondary w-100 py-2'"/>
+            </div>
+        </xpath>
+    </t>
+    <t t-name="restaurant_pos.CustomerNoteOnlyControls"
+       t-inherit="point_of_sale.ControlButtons" t-inherit-mode="extension">
+        <xpath expr="//InternalNoteButton" position="replace">
+            <NoteButton t-if="!props.showRemainingButtons"
+                        label.translate="Customer Note"
+                        class="buttonClass"
+                        icon="'fa fa-sticky-note'"/>
+        </xpath>
+    </t>
+    <t t-name="restaurant_pos.MobileNavbarMenu"
+       t-inherit="point_of_sale.Navbar" t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('status-buttons')]/Dropdown" position="attributes">
+            <attribute name="bottomSheet">false</attribute>
+            <attribute name="menuClass">'restaurant-pos-navbar-menu'</attribute>
+            <attribute name="position">'bottom-end'</attribute>
+        </xpath>
+    </t>
+    <t t-name="restaurant_pos.MobileTextInputActions"
+       t-inherit="point_of_sale.TextInputPopup" t-inherit-mode="extension">
+        <xpath expr="//textarea[@t-ref='input']" position="before">
+            <div class="restaurant-pos-note-actions gap-2 mb-3">
+                <button type="button" class="btn btn-primary btn-lg flex-fill"
+                        t-att-disabled="!this.state.inputValue.trim()" t-on-click="confirm">Apply</button>
+                <button type="button" class="btn btn-secondary btn-lg flex-fill"
+                        t-on-click="close">Discard</button>
+            </div>
+        </xpath>
+    </t>
+</templates>

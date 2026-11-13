@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_restaurant_pos_root" name="Restaurant POS"
+        sequence="30" groups="restaurant_pos.group_restaurant_seller"/>
+    <menuitem id="menu_restaurant_pos_menu" name="Menu Items"
+        parent="menu_restaurant_pos_root" sequence="20"
+        groups="restaurant_pos.group_restaurant_seller"/>
+    <menuitem id="menu_restaurant_pos_items" name="All Items"
+        parent="menu_restaurant_pos_menu" action="action_restaurant_menu_items"
+        sequence="10" groups="restaurant_pos.group_restaurant_seller"/>
+    <menuitem id="menu_restaurant_pos_categories" name="Categories"
+        parent="menu_restaurant_pos_menu" action="action_restaurant_menu_categories"
+        sequence="20" groups="restaurant_pos.group_restaurant_seller"/>
+</odoo>

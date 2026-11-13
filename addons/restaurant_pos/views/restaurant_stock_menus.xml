@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_restaurant_pos_stock" name="Ingredients"
+        parent="menu_restaurant_pos_root" sequence="30"
+        groups="restaurant_pos.group_restaurant_seller"/>
+    <menuitem id="menu_restaurant_pos_ingredients" name="All Ingredients"
+        parent="menu_restaurant_pos_stock" action="action_restaurant_ingredients"
+        sequence="10" groups="restaurant_pos.group_restaurant_seller"/>
+    <menuitem id="menu_restaurant_pos_low_stock" name="Low Stock"
+        parent="menu_restaurant_pos_stock" action="action_restaurant_low_stock"
+        sequence="20" groups="restaurant_pos.group_restaurant_seller"/>
+    <menuitem id="menu_restaurant_pos_recipes" name="Recipes"
+        parent="menu_restaurant_pos_stock" action="action_restaurant_recipes"
+        sequence="30" groups="restaurant_pos.group_restaurant_admin"/>
+    <menuitem id="menu_restaurant_pos_consumption" name="Consumption"
+        parent="menu_restaurant_pos_stock" action="action_restaurant_stock_moves"
+        sequence="40" groups="restaurant_pos.group_restaurant_admin"/>
+    <menuitem id="menu_restaurant_pos_register_consumption" name="Register Consumption"
+        parent="menu_restaurant_pos_stock" action="action_restaurant_pos_consumption"
+        sequence="50" groups="restaurant_pos.group_restaurant_admin"/>
+</odoo>

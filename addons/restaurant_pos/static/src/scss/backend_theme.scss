@@ -1,0 +1,51 @@
+// Khin Lay colors for the OCA Web Responsive backend.
+// The POS register uses a separate asset bundle.
+.o_main_navbar {
+    --NavBar-brand-color: #fff8ee;
+    --NavBar-entry-color: #fff8ee;
+    --NavBar-entry-color--active: #fff;
+    --NavBar-entry-backgroundColor: transparent;
+    --NavBar-entry-backgroundColor--hover: rgba(255, 255, 255, 0.13);
+    --NavBar-entry-backgroundColor--focus: rgba(255, 255, 255, 0.13);
+    --NavBar-entry-backgroundColor--active: rgba(255, 255, 255, 0.2);
+
+    background: #682b20;
+    border-bottom: 1px solid #4d211a;
+
+    .o_grid_apps_menu__button {
+        color: #fff8ee;
+
+        &:hover,
+        &:focus-visible {
+            background: rgba(255, 255, 255, 0.13);
+        }
+    }
+}
+
+.o_grid_apps_menu[data-theme="milk"],
+.o_grid_apps_menu[data-theme="community"] {
+    --app-menu-background: linear-gradient(155deg, #fff8ed, #f1dfc8);
+    --app-menu-text-color: #3b261e;
+    --app-menu-text-shadow: none;
+    --app-menu-hover-background: rgba(132, 59, 37, 0.1);
+
+    .o-app-menu-item__icon {
+        border: 1px solid rgba(93, 42, 29, 0.14);
+        box-shadow: 0 7px 18px rgba(93, 42, 29, 0.12);
+    }
+}
+
+.o_web_client .o_control_panel {
+    background: #fffaf3;
+    border-bottom: 1px solid #e9dacc;
+}
+
+.o_web_client .o_action_manager .btn-primary,
+.o_web_client .o_control_panel .btn-primary {
+    --btn-bg: #873b29;
+    --btn-border-color: #873b29;
+    --btn-hover-bg: #6e2f21;
+    --btn-hover-border-color: #6e2f21;
+    --btn-active-bg: #59251b;
+    --btn-active-border-color: #59251b;
+}

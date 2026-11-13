@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="demo_menu_category_meals" model="restaurant.menu.category">
+        <field name="name">Meals</field>
+    </record>
+    <record id="demo_menu_category_drinks" model="restaurant.menu.category">
+        <field name="name">Drinks</field>
+    </record>
+
+    <record id="demo_menu_item_mohinga" model="restaurant.menu.item">
+        <field name="name">Mohinga</field>
+        <field name="category_id" ref="demo_menu_category_meals"/>
+        <field name="price">4500.00</field>
+        <field name="description">Rice noodle soup with fish broth.</field>
+    </record>
+    <record id="demo_menu_item_shan_noodles" model="restaurant.menu.item">
+        <field name="name">Shan Noodles</field>
+        <field name="category_id" ref="demo_menu_category_meals"/>
+        <field name="price">5000.00</field>
+        <field name="description">Shan style noodles with savory sauce.</field>
+    </record>
+    <record id="demo_menu_item_fried_rice" model="restaurant.menu.item">
+        <field name="name">Fried Rice</field>
+        <field name="category_id" ref="demo_menu_category_meals"/>
+        <field name="price">6000.00</field>
+        <field name="description">Fried rice with vegetables and egg.</field>
+    </record>
+    <record id="demo_menu_item_milk_tea" model="restaurant.menu.item">
+        <field name="name">Milk Tea</field>
+        <field name="category_id" ref="demo_menu_category_drinks"/>
+        <field name="price">1800.00</field>
+    </record>
+    <record id="demo_menu_item_lime_juice" model="restaurant.menu.item">
+        <field name="name">Lime Juice</field>
+        <field name="category_id" ref="demo_menu_category_drinks"/>
+        <field name="price">2500.00</field>
+    </record>
+</odoo>
